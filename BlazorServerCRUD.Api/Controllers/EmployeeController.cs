@@ -1,5 +1,6 @@
 using BlazorServerCRUD.Api.Models;
-using BlazorServerCRUD.Models;
+using BlazorServerCRUD.Api.Mappers;
+using BlazorServerCRUD.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServerCRUD.Api.Controllers
@@ -18,25 +19,33 @@ namespace BlazorServerCRUD.Api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetEmployees()
         {
-            return Ok(await _employeeRepository.GetEmployees());
+            var employees = await _employeeRepository.GetEmployees();
+
+            return Ok(employees.Select(EmployeeMapper.ToDto));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetEmployee(int id)
         {
-            return Ok(await _employeeRepository.GetEmployee(id));
+            var employee = await _employeeRepository.GetEmployee(id);
+
+            return Ok(employee is null ? null : EmployeeMapper.ToDto(employee));
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddEmployee(Employee employee)
+        public async Task<ActionResult> AddEmployee(EmployeeDto employee)
         {
-            return Ok(await _employeeRepository.AddEmployee(employee));
+            var result = await _employeeRepository.AddEmployee(EmployeeMapper.ToEntity(employee));
+
+            return Ok(result is null ? null : EmployeeMapper.ToDto(result));
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateEmployee(Employee employee)
+        public async Task<ActionResult> UpdateEmployee(EmployeeDto employee)
         {
-            return Ok(await _employeeRepository.UpdateEmployee(employee));
+            var result = await _employeeRepository.UpdateEmployee(EmployeeMapper.ToEntity(employee));
+
+            return Ok(result is null ? null : EmployeeMapper.ToDto(result));
         }
 
         [HttpDelete("{id}")]

@@ -11,7 +11,7 @@
     [Parameter]
     public int Id { get; set; }
 
-    Models.Department department = new Models.Department();
+    DepartmentDto department = new();
 
     protected async override Task OnParametersSetAsync()
     {

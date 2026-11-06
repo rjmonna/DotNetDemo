@@ -1,17 +1,17 @@
-using BlazorServerCRUD.Models;
+using BlazorServerCRUD.Models.DTOs;
 
 namespace BlazorServerCRUD.Web.Services
 {
     public interface IEmployeeService
     {
-        Task<IEnumerable<Employee>> GetEmployees();
+        Task<IEnumerable<EmployeeDto>> GetEmployees();
 
-        Task<Employee> GetEmployee(int id);
+        Task<EmployeeDto> GetEmployee(int id);
 
         Task DeleteEmployee(int id);
 
-        Task AddEmployee(Employee employee);
+        Task AddEmployee(EmployeeDto employee);
 
-        Task UpdateEmployee(Employee employee);
+        Task UpdateEmployee(EmployeeDto employee);
     }
 }

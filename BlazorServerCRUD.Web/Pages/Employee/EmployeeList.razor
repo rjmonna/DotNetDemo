@@ -44,7 +44,7 @@
                             @employee.DateOfBirth
                         </td>
                         <td>
-                            @employee.Department?.DepartmentName
+                            @employee.DepartmentName
                         </td>
                     </tr>
                 }
@@ -53,7 +53,7 @@
     }
 </div>
 @code {
-    private IEnumerable<Models.Employee> employees = [];
+    private IEnumerable<EmployeeDto> employees = [];
 
     protected override async Task OnInitializedAsync()
     {

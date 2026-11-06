@@ -2,20 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlazorServerCRUD.Models;
+using BlazorServerCRUD.Models.DTOs;
 
 namespace BlazorServerCRUD.Web.Services
 {
     public interface IDepartmentService
     {
-        Task<IEnumerable<Department>> GetDepartments();
+        Task<IEnumerable<DepartmentDto>> GetDepartments();
 
-        Task<Department> GetDepartment(int id);
+        Task<DepartmentDto> GetDepartment(int id);
 
         Task DeleteDepartment(int id);
 
-        Task AddDepartment(Department department);
+        Task AddDepartment(DepartmentDto department);
 
-        Task UpdateDepartment(Department department);
+        Task UpdateDepartment(DepartmentDto department);
     }
 }
