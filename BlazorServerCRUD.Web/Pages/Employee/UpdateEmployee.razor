@@ -11,7 +11,7 @@
     [Parameter]
     public int Id { get; set; }
 
-    Models.Employee employee = new Models.Employee();
+    EmployeeDto employee = new();
 
     protected async override Task OnParametersSetAsync()
     {

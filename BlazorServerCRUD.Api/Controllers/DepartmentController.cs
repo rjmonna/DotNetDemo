@@ -1,5 +1,6 @@
 using BlazorServerCRUD.Api.Models;
-using BlazorServerCRUD.Models;
+using BlazorServerCRUD.Api.Mappers;
+using BlazorServerCRUD.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlazorServerCRUD.Api.Controllers
@@ -18,25 +19,33 @@ namespace BlazorServerCRUD.Api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetDepartments()
         {
-            return Ok(await _departmentRepository.GetDepartments());
+            var departments = await _departmentRepository.GetDepartments();
+
+            return Ok(departments.Select(DepartmentMapper.ToDto));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetDepartment(int id)
         {
-            return Ok(await _departmentRepository.GetDepartment(id));
+            var department = await _departmentRepository.GetDepartment(id);
+
+            return Ok(department is null ? null : DepartmentMapper.ToDto(department));
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddDepartment(Department department)
+        public async Task<ActionResult> AddDepartment(DepartmentDto department)
         {
-            return Ok(await _departmentRepository.AddDepartment(department));
+            var result = await _departmentRepository.AddDepartment(DepartmentMapper.ToEntity(department));
+
+            return Ok(result is null ? null : DepartmentMapper.ToDto(result));
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateDepartment(Department department)
+        public async Task<ActionResult> UpdateDepartment(DepartmentDto department)
         {
-            return Ok(await _departmentRepository.UpdateDepartment(department));
+            var result = await _departmentRepository.UpdateDepartment(DepartmentMapper.ToEntity(department));
+
+            return Ok(result is null ? null : DepartmentMapper.ToDto(result));
         }
 
         [HttpDelete("{id}")]
