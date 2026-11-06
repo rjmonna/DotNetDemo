@@ -23,12 +23,14 @@ namespace BlazorServerCRUD.Web.Services
 
         public async Task<Employee> GetEmployee(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Employee>($"api/employee/{id}");
+            return await _httpClient.GetFromJsonAsync<Employee>($"api/employee/{id}")
+                ?? throw new InvalidDataException("The employee response was empty.");
         }
 
         public async Task<IEnumerable<Employee>> GetEmployees()
         {
-            return await _httpClient.GetFromJsonAsync<Employee[]>("api/employee");
+            return await _httpClient.GetFromJsonAsync<Employee[]>("api/employee")
+                ?? throw new InvalidDataException("The employees response was empty.");
         }
 
         public async Task UpdateEmployee(Employee employee)

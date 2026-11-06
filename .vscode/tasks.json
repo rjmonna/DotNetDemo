@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/BlazorServerCRUD.Web/BlazorServerCRUD.Web.csproj",
+                "${workspaceFolder}/BlazorServerCRUD.slnx",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],

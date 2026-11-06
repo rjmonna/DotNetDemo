@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body text-center">
                     <h4>Department ID : @Department.DepartmentId</h4>
-                    <h4>Name : @Department?.DepartmentName</h4>
+                    <h4>Name : @Department.DepartmentName</h4>
                 </div>
                 <div class="card-footer text-center">
                     <a class="btn btn-primary" href="/departments">Back</a>
@@ -26,18 +26,18 @@
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
     public Models.Department Department { get; set; } = new Models.Department();
 
     protected override async Task OnInitializedAsync()
     {
-        Department = await Service.GetDepartment(int.Parse(Id));
+        Department = await Service.GetDepartment(Id);
     }
 
-    protected async void DeleteDepartment()
+    protected async Task DeleteDepartment()
     {
-        await Service.DeleteDepartment(int.Parse(Id));
+        await Service.DeleteDepartment(Id);
         navManager.NavigateTo("/departments");
     }
 }

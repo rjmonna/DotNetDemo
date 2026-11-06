@@ -13,7 +13,8 @@ namespace BlazorServerCRUD.Web.Services
 
         public async Task<IEnumerable<Department>> GetDepartments()
         {
-            return await _httpClient.GetFromJsonAsync<Department[]>("api/department");
+            return await _httpClient.GetFromJsonAsync<Department[]>("api/department")
+                ?? throw new InvalidDataException("The departments response was empty.");
         }
 
         public async Task AddDepartment(Department department)
@@ -28,7 +29,8 @@ namespace BlazorServerCRUD.Web.Services
 
         public async Task<Department> GetDepartment(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Department>($"api/department/{id}");
+            return await _httpClient.GetFromJsonAsync<Department>($"api/department/{id}")
+                ?? throw new InvalidDataException("The department response was empty.");
         }
 
         public async Task UpdateDepartment(Department department)

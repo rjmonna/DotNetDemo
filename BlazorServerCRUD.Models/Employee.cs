@@ -10,7 +10,7 @@ namespace BlazorServerCRUD.Models
     {
         public int EmployeeId { get; set; }
 
-        public string EmployeeName { get; set; }
+        public string EmployeeName { get; set; } = string.Empty;
 
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }

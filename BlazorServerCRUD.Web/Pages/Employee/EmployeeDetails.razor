@@ -26,18 +26,18 @@
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
     public Models.Employee Employee { get; set; } = new Models.Employee();
 
     protected override async Task OnInitializedAsync()
     {
-        Employee = await Service.GetEmployee(int.Parse(Id));
+        Employee = await Service.GetEmployee(Id);
     }
 
-    protected async void DeleteEmployee()
+    protected async Task DeleteEmployee()
     {
-        await Service.DeleteEmployee(int.Parse(Id));
+        await Service.DeleteEmployee(Id);
         navManager.NavigateTo("/");
     }
 }

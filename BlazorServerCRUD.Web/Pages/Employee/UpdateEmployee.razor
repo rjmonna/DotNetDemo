@@ -9,13 +9,13 @@
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
     Models.Employee employee = new Models.Employee();
 
     protected async override Task OnParametersSetAsync()
     {
-        employee = await Service.GetEmployee(int.Parse(Id));
+        employee = await Service.GetEmployee(Id);
     }
 
     async Task Update()
