@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
-using DotNetDemo.Models;
 using DotNetDemo.Services.Contracts;
+using DotNetDemo.Models.DTOs;
 
 namespace DotNetDemo.Services
 {
@@ -13,12 +13,13 @@ namespace DotNetDemo.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<Department>> GetDepartments()
+        public async Task<IEnumerable<DepartmentDto>> GetDepartments()
         {
-            return await _httpClient.GetFromJsonAsync<Department[]>("api/department");
+            return await _httpClient.GetFromJsonAsync<DepartmentDto[]>("api/department")
+                ?? throw new InvalidDataException("The departments response was empty.");
         }
 
-        public async Task AddDepartment(Department department)
+        public async Task AddDepartment(DepartmentDto department)
         {
             await _httpClient.PostAsJsonAsync($"api/department", department);
         }
@@ -28,12 +29,13 @@ namespace DotNetDemo.Services
             await _httpClient.DeleteAsync($"api/department/{id}");
         }
 
-        public async Task<Department> GetDepartment(int id)
+        public async Task<DepartmentDto> GetDepartment(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Department>($"api/department/{id}");
+            return await _httpClient.GetFromJsonAsync<DepartmentDto>($"api/department/{id}")
+                ?? throw new InvalidDataException("The department response was empty.");
         }
 
-        public async Task UpdateDepartment(Department department)
+        public async Task UpdateDepartment(DepartmentDto department)
         {
             await _httpClient.PutAsJsonAsync($"api/department", department);
         }

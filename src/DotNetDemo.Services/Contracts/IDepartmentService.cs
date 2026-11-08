@@ -1,17 +1,17 @@
-using DotNetDemo.Models;
+using DotNetDemo.Models.DTOs;
 
 namespace DotNetDemo.Services.Contracts
 {
     public interface IDepartmentService
     {
-        Task<IEnumerable<Department>> GetDepartments();
+        Task<IEnumerable<DepartmentDto>> GetDepartments();
 
-        Task<Department> GetDepartment(int id);
+        Task<DepartmentDto> GetDepartment(int id);
 
         Task DeleteDepartment(int id);
 
-        Task AddDepartment(Department department);
+        Task AddDepartment(DepartmentDto department);
 
-        Task UpdateDepartment(Department department);
+        Task UpdateDepartment(DepartmentDto department);
     }
 }

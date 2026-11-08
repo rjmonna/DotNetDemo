@@ -1,6 +1,6 @@
 using System.Net.Http.Json;
-using DotNetDemo.Models;
 using DotNetDemo.Services.Contracts;
+using DotNetDemo.Models.DTOs;
 
 namespace DotNetDemo.Services
 {
@@ -13,7 +13,7 @@ namespace DotNetDemo.Services
             _httpClient = httpClient;
         }
 
-        public async Task AddEmployee(Employee employee)
+        public async Task AddEmployee(EmployeeDto employee)
         {
             await _httpClient.PostAsJsonAsync($"api/employee", employee);
         }
@@ -23,17 +23,19 @@ namespace DotNetDemo.Services
             await _httpClient.DeleteAsync($"api/employee/{id}");
         }
 
-        public async Task<Employee> GetEmployee(int id)
+        public async Task<EmployeeDto> GetEmployee(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Employee>($"api/employee/{id}");
+            return await _httpClient.GetFromJsonAsync<EmployeeDto>($"api/employee/{id}")
+                ?? throw new InvalidDataException("The employee response was empty.");
         }
 
-        public async Task<IEnumerable<Employee>> GetEmployees()
+        public async Task<IEnumerable<EmployeeDto>> GetEmployees()
         {
-            return await _httpClient.GetFromJsonAsync<Employee[]>("api/employee");
+            return await _httpClient.GetFromJsonAsync<EmployeeDto[]>("api/employee")
+                ?? throw new InvalidDataException("The employees response was empty.");
         }
 
-        public async Task UpdateEmployee(Employee employee)
+        public async Task UpdateEmployee(EmployeeDto employee)
         {
             await _httpClient.PutAsJsonAsync($"api/employee", employee);
         }

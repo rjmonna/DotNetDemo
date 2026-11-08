@@ -58,13 +58,13 @@
 }
 @code {
     [Parameter]
-    public Models.Employee employee { get; set; }
+    public EmployeeDto employee { get; set; } = new();
     [Parameter]
     public string ButtonText { get; set; } = "Save";
     [Parameter]
     public EventCallback OnValidSubmit { get; set; }
 
-    private IEnumerable<Models.Department> departments;
+    private IEnumerable<DepartmentDto> departments = [];
 
     protected override async Task OnInitializedAsync()
     {

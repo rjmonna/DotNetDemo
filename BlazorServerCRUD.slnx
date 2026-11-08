@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="src/DotNetDemo.Api/DotNetDemo.Api.csproj" />
+  <Project Path="src/DotNetDemo.Infrastructure/DotNetDemo.Infrastructure.csproj" />
+  <Project Path="src/DotNetDemo.Models/DotNetDemo.Models.csproj" />
+  <Project Path="src/DotNetDemo.Services/DotNetDemo.Services.csproj" />
+  <Project Path="src/DotNetDemo.Web/DotNetDemo.Web.csproj" />
+  <Project Path="src/DotNetDemo.Worker/DotNetDemo.Worker.csproj" />
+</Solution>

@@ -1,6 +1,8 @@
 using DotNetDemo.Infrastructure;
 using DotNetDemo.Infrastructure.Contracts;
 using DotNetDemo.Models;
+using DotNetDemo.Models.DTOs;
+using DotNetDemo.Api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetDemo.Api.Controllers
@@ -19,25 +21,33 @@ namespace DotNetDemo.Api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetDepartments()
         {
-            return Ok(await _departmentRepository.GetDepartments());
+            var departments = await _departmentRepository.GetDepartments();
+
+            return Ok(departments.Select(DepartmentMapper.ToDto));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult> GetDepartment(int id)
         {
-            return Ok(await _departmentRepository.GetDepartment(id));
+            var department = await _departmentRepository.GetDepartment(id);
+
+            return Ok(department is null ? null : DepartmentMapper.ToDto(department));
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddDepartment(Department department)
+        public async Task<ActionResult> AddDepartment(DepartmentDto department)
         {
-            return Ok(await _departmentRepository.AddDepartment(department));
+            var result = await _departmentRepository.AddDepartment(DepartmentMapper.ToEntity(department));
+
+            return Ok(result is null ? null : DepartmentMapper.ToDto(result));
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateDepartment(Department department)
+        public async Task<ActionResult> UpdateDepartment(DepartmentDto department)
         {
-            return Ok(await _departmentRepository.UpdateDepartment(department));
+            var result = await _departmentRepository.UpdateDepartment(DepartmentMapper.ToEntity(department));
+
+            return Ok(result is null ? null : DepartmentMapper.ToDto(result));
         }
 
         [HttpDelete("{id}")]

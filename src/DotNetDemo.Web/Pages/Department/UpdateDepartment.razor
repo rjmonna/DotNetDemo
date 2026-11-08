@@ -9,13 +9,13 @@
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
-    Models.Department department = new Models.Department();
+    DepartmentDto department = new();
 
     protected async override Task OnParametersSetAsync()
     {
-        department = await Service.GetDepartment(int.Parse(Id));
+        department = await Service.GetDepartment(Id);
     }
 
     async Task Update()

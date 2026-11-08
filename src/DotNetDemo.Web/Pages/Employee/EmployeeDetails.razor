@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body text-center">
                     <h4>Employee ID : @Employee.EmployeeId</h4>
-                    <h4>Department : @Employee.Department?.DepartmentName</h4>
+                    <h4>Department : @Employee.DepartmentName</h4>
                 </div>
                 <div class="card-footer text-center">
                     <a class="btn btn-primary" href="/">Back</a>
@@ -26,18 +26,18 @@
 
 @code {
     [Parameter]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
-    public Models.Employee Employee { get; set; } = new Models.Employee();
+    public EmployeeDto Employee { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
-        Employee = await Service.GetEmployee(int.Parse(Id));
+        Employee = await Service.GetEmployee(Id);
     }
 
-    protected async void DeleteEmployee()
+    protected async Task DeleteEmployee()
     {
-        await Service.DeleteEmployee(int.Parse(Id));
+        await Service.DeleteEmployee(Id);
         navManager.NavigateTo("/");
     }
 }

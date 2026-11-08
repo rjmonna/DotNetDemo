@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/DotNetDemo.Web/DotNetDemo.Web.csproj",
+                "${workspaceFolder}/src/DotNetDemo.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/DotNetDemo.Web/DotNetDemo.Web.csproj",
+                "${workspaceFolder}/src/DotNetDemo.Web/DotNetDemo.Web.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary;ForceNoAlign"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/DotNetDemo.Web/DotNetDemo.Web.csproj"
+                "${workspaceFolder}/src/DotNetDemo.Web/DotNetDemo.Web.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
