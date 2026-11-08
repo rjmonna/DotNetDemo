@@ -3,20 +3,21 @@
 ## Build and run
 
 - Restore and build the full solution with `dotnet restore BlazorServerCRUD.slnx` and `dotnet build BlazorServerCRUD.slnx`.
-- Run the API with `dotnet run --project BlazorServerCRUD.Api/BlazorServerCRUD.Api.csproj --urls http://localhost:5000`. Run the UI separately with `dotnet run --project BlazorServerCRUD.Web/BlazorServerCRUD.Web.csproj`; its development `ApiUrl` points to port 5000.
-- Publish the UI with `dotnet publish BlazorServerCRUD.Web/BlazorServerCRUD.Web.csproj`. The VS Code `build`, `publish`, and `watch` tasks are defined in `.vscode/tasks.json`.
+- Run the API with `dotnet run --project src/DotNetDemo.Api/DotNetDemo.Api.csproj --urls http://localhost:5000`. Run the UI separately with `dotnet run --project src/DotNetDemo.Web/DotNetDemo.Web.csproj`; its development `ApiUrl` points to port 5000.
+- Publish the UI with `dotnet publish src/DotNetDemo.Web/DotNetDemo.Web.csproj`. VS Code build, publish, and watch tasks are in `src/.vscode/tasks.json`.
 - No test projects or lint commands are currently configured. When a test project is added, run its suite with `dotnet test <test-project>.csproj` or a single test with `dotnet test <test-project>.csproj --filter FullyQualifiedName~<TestName>`.
 
 ## Architecture
 
-- The solution has three projects, all targeting .NET 10: `BlazorServerCRUD.Models` shares the `Department`, `Employee`, and `Gender` types; `BlazorServerCRUD.Api` exposes CRUD controllers and accesses data through repository interfaces and EF Core; `BlazorServerCRUD.Web` is a server-side Blazor UI that calls the API through typed HTTP services.
-- API routes follow `api/[controller]` (`api/department` and `api/employee`). Keep UI data access in `BlazorServerCRUD.Web/Services` rather than having components call the API directly.
-- The API currently configures EF Core's in-memory provider and seeds sample departments and employees at startup. This data is not durable across process restarts. The SQL Server provider setup is commented out in `BlazorServerCRUD.Api/Program.cs`.
-- The shared EF entities have a bidirectional Department/Employee navigation. The API configures JSON cycle handling in `Program.cs`; preserve that behavior when changing serialization or response shapes.
+- The solution contains API, Infrastructure, Models, Services, Web, and Worker projects under `src`, all targeting .NET 10.
+- `DotNetDemo.Models` contains shared entities and API DTOs. `DotNetDemo.Api` exposes CRUD controllers and maps entities to DTOs; persistence is implemented in `DotNetDemo.Infrastructure`.
+- API routes follow `api/[controller]`. Keep UI data access in `DotNetDemo.Services`; the Blazor UI registers typed HTTP clients against the configured `ApiUrl`.
+- The API configures EF Core's in-memory provider and seeds sample data at startup. This data is not durable across process restarts. The SQL Server provider setup is commented out in `src/DotNetDemo.Api/Program.cs`.
+- The Department/Employee entities have bidirectional navigation. Preserve the API's JSON cycle handling when changing serialization or response shapes.
 
 ## Repository conventions
 
-- Configure the UI's API endpoint through `ApiUrl` (development default: `http://localhost:5000` in `BlazorServerCRUD.Web/appsettings.Development.json`); the typed `HttpClient` services use it as their base address.
-- Repository interfaces and EF implementations live together under `BlazorServerCRUD.Api/Models`. Controllers delegate persistence operations to those repositories.
-- Blazor CRUD pages are grouped by entity under `BlazorServerCRUD.Web/Pages/Department` and `BlazorServerCRUD.Web/Pages/Employee`; each group uses a shared `Form.razor` component for create/update forms.
-- See `README.md` for the solution's origin and its in-memory database setup.
+- Configure the UI API endpoint through `ApiUrl` (development default: `http://localhost:5000` in `src/DotNetDemo.Web/appsettings.Development.json`).
+- Repository interfaces and EF implementations live under `src/DotNetDemo.Infrastructure`; API controllers delegate persistence operations to those repositories.
+- Blazor CRUD pages are grouped under `src/DotNetDemo.Web/Pages/Department`, `Employee`, and `Article`; Department and Employee forms use shared `Form.razor` components.
+- See `src/README.md` for the solution's background and in-memory storage setup.

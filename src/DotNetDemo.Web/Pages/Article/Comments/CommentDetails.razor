@@ -1,0 +1,47 @@
+﻿@page "/article/{articleId}/comment/{articleCommentId}"
+@using TinyMCE.Blazor
+@inject DotNetDemo.Services.Contracts.IArticleCommentService Service
+@inject NavigationManager navManager
+<h3>Article comment details</h3>
+
+<div class="row justify content center m.3">
+    <div class="col-sm-8">
+        <div class="card">
+            @if(ArticleComment != null) {
+                <div class="card-header">
+                    <h1>@ArticleComment.Subject</h1>
+                </div>
+                <div class="card-body text-center">
+                    <h4>Article ID : @ArticleComment.ArticleId</h4>
+                    <h4>Article comment ID : @ArticleComment.ArticleCommentId</h4>
+                    <h4>Subject : @ArticleComment.Subject</h4>
+                </div>
+                <div class="card-body text-center">
+                    @((MarkupString)_bodyText)
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-primary" href="/articles/comments/approve">Back</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string ArticleId { get; set; }
+    
+    [Parameter]
+    public string ArticleCommentId { get; set; }
+
+    public Models.ArticleComment ArticleComment { get; set; } = new Models.ArticleComment();
+
+    private string _bodyText = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArticleComment = await Service.GetArticleComment(Guid.Parse(ArticleCommentId));
+
+        _bodyText = ArticleComment?.Body ?? "";
+    }
+}

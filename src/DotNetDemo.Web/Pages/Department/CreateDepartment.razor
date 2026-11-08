@@ -1,0 +1,18 @@
+﻿@page "/createdepartment"
+@using Pages
+@inject DotNetDemo.Services.Contracts.IDepartmentService Service
+@inject NavigationManager navManager
+<h3>CreateDepartment</h3>
+
+<Form ButtonText="Create Department" department="@department"
+    OnValidSubmit="@Create" />
+
+@code {
+    DepartmentDto department = new();
+
+    async Task Create()
+    {
+        await Service.AddDepartment(department);
+        navManager.NavigateTo("/departments");
+    }
+}

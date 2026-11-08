@@ -1,0 +1,26 @@
+﻿@page "/updateemployee/{id}"
+@using Pages
+@inject DotNetDemo.Services.Contracts.IEmployeeService Service
+@inject NavigationManager navManager
+<h3>UpdateEmployee</h3>
+
+<Form ButtonText="Update Employee" employee="@employee"
+    OnValidSubmit="@Update" />
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    EmployeeDto employee = new();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        employee = await Service.GetEmployee(Id);
+    }
+
+    async Task Update()
+    {
+        await Service.UpdateEmployee(employee);
+        navManager.NavigateTo("/");
+    }
+}

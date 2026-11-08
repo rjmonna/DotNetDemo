@@ -1,0 +1,18 @@
+﻿@page "/createemployee"
+@using Pages
+@inject DotNetDemo.Services.Contracts.IEmployeeService Service
+@inject NavigationManager navManager
+<h3>CreateEmployee</h3>
+
+<Form ButtonText="Create Employee" employee="@employee"
+    OnValidSubmit="@Create" />
+
+@code {
+    EmployeeDto employee = new();
+
+    async Task Create()
+    {
+        await Service.AddEmployee(employee);
+        navManager.NavigateTo("/");
+    }
+}

@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using TinyMCE.Blazor
+@inject DotNetDemo.Services.Contracts.IArticleService Service
+
+@if (Article != null) {
+    <EditForm Model="@Article" OnValidSubmit="@OnValidSubmit">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>Subject</label>
+            <div>
+                <InputText @bind-Value="@Article.Subject" class="form-control col-sm-3" />
+                <ValidationMessage For="@(() => Article.Subject)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Article</label>
+            <div>
+                <Editor @bind-Value="@Article.Body" class="form-control col-sm-3" Field="() => Article.Body" ScriptSrc="/js/tinymce/tinymce.js" Conf="@_tinyMceConf" />
+                <ValidationMessage For="@(() => Article.Body)" />
+            </div>
+        </div>
+        <a class="btn btn-primary" href="/articles">Back</a>
+        <button type="submit" class="btn btn-success">
+            @ButtonText
+        </button>
+    </EditForm>
+}
+@code {
+    [Parameter]
+    public Models.Article Article { get; set; }
+    [Parameter]
+    public string ButtonText { get; set; } = "Save";
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    private Dictionary<string, object> _tinyMceConf { get; set; } = new Dictionary<string, object>() {{"promotion", false}};
+}

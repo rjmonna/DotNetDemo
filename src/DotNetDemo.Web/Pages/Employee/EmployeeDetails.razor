@@ -1,0 +1,43 @@
+﻿@page "/employeedetails/{id}"
+@inject DotNetDemo.Services.Contracts.IEmployeeService Service
+@inject NavigationManager navManager
+<h3>EmployeeDetails</h3>
+
+<div class="row justify content center m.3">
+    <div class="col-sm-8">
+        <div class="card">
+            @if(Employee != null) {
+                <div class="card-header">
+                    <h1>@Employee.EmployeeName</h1>
+                </div>
+                <div class="card-body text-center">
+                    <h4>Employee ID : @Employee.EmployeeId</h4>
+                    <h4>Department : @Employee.DepartmentName</h4>
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-primary" href="/">Back</a>
+                    <a class="btn btn-primary" href="/updateemployee/@Employee.EmployeeId">Edit</a>
+                    <button class="btn btn-danger" @onclick="DeleteEmployee">Delete</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    public EmployeeDto Employee { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Employee = await Service.GetEmployee(Id);
+    }
+
+    protected async Task DeleteEmployee()
+    {
+        await Service.DeleteEmployee(Id);
+        navManager.NavigateTo("/");
+    }
+}

@@ -1,0 +1,18 @@
+﻿@page "/createarticle"
+@using Pages
+@inject DotNetDemo.Services.Contracts.IArticleService Service
+@inject NavigationManager navManager
+<h3>Create new article</h3>
+
+<Form ButtonText="Create article" Article="@article"
+    OnValidSubmit="@Create" />
+
+@code {
+    Models.Article article = new Models.Article();
+
+    async Task Create()
+    {
+        await Service.AddArticle(article);
+        navManager.NavigateTo("/");
+    }
+}

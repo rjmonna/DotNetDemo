@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@inject DotNetDemo.Services.Contracts.IDepartmentService Service
+
+@if (department != null) {
+    <EditForm Model="@department" OnValidSubmit="@OnValidSubmit">
+        <DataAnnotationsValidator />
+        <div class="form-group">
+            <label>Department Name :</label>
+            <div>
+                <InputText @bind-Value="@department.DepartmentName" class="form-control col-sm-3" />
+                <ValidationMessage For="@(() => department.DepartmentName)" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">
+            @ButtonText
+        </button>
+    </EditForm>
+}
+@code {
+    [Parameter]
+    public DepartmentDto department { get; set; } = new();
+    [Parameter]
+    public string ButtonText { get; set; } = "Save";
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        
+    }
+}

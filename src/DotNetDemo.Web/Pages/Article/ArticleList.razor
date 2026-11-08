@@ -1,0 +1,44 @@
+﻿@page "/articles"
+@inject DotNetDemo.Services.Contracts.IArticleService Service
+<div>
+    <h3>Articles</h3>
+    <div class="form-group">
+        <a class="btn btn-success" href="createarticle"><i class="oi oi-plus"></i> Create New</a>
+    </div>
+</div>
+<div>
+    @if (articles != null) {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        ID
+                    </th>
+                    <th scope="col">
+                        Subject
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var article in articles) {
+                    <tr>
+                        <td>
+                            <a href=@($"articledetails/{article.ArticleId}")>@article.ArticleId</a>
+                        </td>
+                        <td>
+                            @article.Subject
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+@code {
+    private IEnumerable<Models.Article> articles;
+
+    protected override async Task OnInitializedAsync()
+    {
+        articles = await Service.SearchArticles();
+    }
+}

@@ -1,0 +1,81 @@
+﻿@page "/article/{id}"
+@using TinyMCE.Blazor
+@using BlazorCaptcha
+@inject DotNetDemo.Services.Contracts.IArticleService Service
+@inject NavigationManager navManager
+<h3>Article with comments</h3>
+
+<div class="row justify content center m.3">
+    <div class="col-sm-8">
+        <div class="card">
+            @if(Article != null) {
+                <div class="card-header">
+                    <h1>@Article.Subject</h1>
+                </div>
+                <div class="card-body text-center">
+                    @((MarkupString)_bodyText)
+                </div>
+                <div class="card-body text-center">
+                    Feedback
+                </div>
+                <div class="card-body text-left">Subject<br />
+                    <InputText @bind-Value="NewArticleComment.Subject" /><br />Body<br />
+                    <Editor @bind-Value="NewArticleComment.Body" ScriptSrc="/js/tinymce/tinymce.js" Conf="@_tinyMceConf" Field="() => NewArticleComment.Body" />
+                    Captcha<Captcha @bind-CaptchaWord="@Captcha" CharNumber="@CaptchaLetters" />
+                    Enter captcha<br /><InputText @bind-Value="GivenCaptcha" /><br />
+                    <button class="btn btn-danger" @onclick="SubmitComment">Submit comment</button>
+                </div>
+                <div class="card-body text-center">Comments
+                    @if(Article.ArticleComments != null) {
+                        @foreach(var comment in Article.ArticleComments) {
+                            <h4>@comment.Subject</h4>
+                            <div>@((MarkupString)comment.Body)</div>
+                        }
+                    }
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-primary" href="/articleoverview">Back</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    public Models.Article Article { get; set; } = new Models.Article();
+
+    public Models.ArticleComment NewArticleComment { get; set; } = new Models.ArticleComment();
+
+    private string _bodyText = "";
+
+    private Dictionary<string, object> _tinyMceConf { get; set; } = new Dictionary<string, object>() {{"promotion", false}};
+
+    private string Captcha = "";
+    private int CaptchaLetters = 5;
+
+    private string GivenCaptcha = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Captcha = BlazorCaptcha.Tools.GetCaptchaWord(CaptchaLetters);
+
+        Article = await Service.GetArticle(Guid.Parse(Id));
+
+        NewArticleComment.ArticleId = Article.ArticleId;
+
+        _bodyText = Article?.Body ?? "";
+    }
+
+    protected async void SubmitComment()
+    {
+        if (!String.IsNullOrWhiteSpace(GivenCaptcha) && Captcha == GivenCaptcha)
+        {
+            await Service.CommentArticle(NewArticleComment);
+
+            navManager.NavigateTo("/articleoverview");
+        }
+    }
+}

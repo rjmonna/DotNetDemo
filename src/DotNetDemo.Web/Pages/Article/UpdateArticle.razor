@@ -1,0 +1,26 @@
+﻿@page "/updatearticle/{id}"
+@using Pages
+@inject DotNetDemo.Services.Contracts.IArticleService Service
+@inject NavigationManager navManager
+<h3>Edit article</h3>
+
+<Form ButtonText="Update article" Article="@Article"
+    OnValidSubmit="@Update" />
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    Models.Article Article = new Models.Article();
+
+    protected async override Task OnParametersSetAsync()
+    {
+        Article = await Service.GetArticle(Guid.Parse(Id));
+    }
+
+    async Task Update()
+    {
+        await Service.UpdateArticle(Article);
+        navManager.NavigateTo("/");
+    }
+}

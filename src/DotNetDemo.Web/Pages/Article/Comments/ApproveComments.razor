@@ -1,0 +1,62 @@
+﻿@page "/articles/comments/approve"
+@inject DotNetDemo.Services.Contracts.IArticleCommentService Service
+<div>
+    <h3>Approve comments</h3>
+</div>
+<div>
+    @if (ArticleComments != null) {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        ID
+                    </th>
+                    <th scope="col">
+                        Subject
+                    </th>
+                    <th scope="col">
+                        Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var comment in ArticleComments) {
+                    <tr>
+                        <td>
+                            <a href=@($"article/{comment.ArticleId}/comment/{comment.ArticleCommentId}")>@comment.ArticleCommentId</a>
+                        </td>
+                        <td>
+                            @comment.Subject
+                        </td>
+                        <td>
+                            <Button Color="ButtonColor.Success" Size="Size.Small" @onclick="() => ApproveAsync(comment.ArticleCommentId)">Approve</Button>
+                            <Button Color="ButtonColor.Danger" Size="Size.Small" @onclick="() => DeclineAsync(comment.ArticleCommentId)">Decline</Button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+@code {
+    private IEnumerable<Models.ArticleComment> ArticleComments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        ArticleComments = await Service.GetPendingArticleComments();
+    }
+
+    private async Task ApproveAsync(Guid id)
+    {
+        await Service.ApproveArticleComment(id);
+        
+        ArticleComments = await Service.GetPendingArticleComments();
+    }
+
+    private async Task DeclineAsync(Guid id)
+    {
+        await Service.DeclineArticleComment(id);
+        
+        ArticleComments = await Service.GetPendingArticleComments();
+    }
+}
